@@ -32,8 +32,15 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "recordAudioAndroid": true
+        }
       ]
     ],
+    
     "experiments": {
       "typedRoutes": true
     }
