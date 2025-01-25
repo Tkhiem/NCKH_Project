@@ -2,16 +2,20 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    "jsx": "react-native", // Cấu hình JSX cho React Native
+    "lib": ["dom", "esnext"], // Bao gồm định nghĩa DOM và ESNext
     "paths": {
-      "@/*": [
-        "./*"
-      ]
-    }
+      "@/*": ["./*"]
+    },
+    "skipLibCheck": true, // Bỏ qua kiểm tra type của thư viện
+    "esModuleInterop": true, // Hỗ trợ import ES module
+    "resolveJsonModule": true // Cho phép import tệp JSON
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ] // Loại trừ các tệp không cần thiết
 }
