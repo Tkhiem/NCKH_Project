@@ -36,3 +36,9 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+
+# Bỏ qua tất cả file trong model/
+model/*
+
+# Nhưng vẫn giữ model.onnx
+!model/model.onnx

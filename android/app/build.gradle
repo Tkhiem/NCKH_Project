@@ -1,0 +1,75 @@
+apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
+apply plugin: "com.facebook.react"
+
+def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
+
+react {
+    entryFile = file(["node", "-e", "require('expo/scripts/resolveAppEntry')", projectRoot, "android", "absolute"].execute(null, rootDir).text.trim())
+    reactNativeDir = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getAbsoluteFile()
+    hermesCommand = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getAbsolutePath() + "/sdks/hermesc/%OS-BIN%/hermesc"
+    codegenDir = new File(["node", "--print", "require.resolve('@react-native/codegen/package.json', { paths: [require.resolve('react-native/package.json')] })"].execute(null, rootDir).text.trim()).getParentFile().getAbsoluteFile()
+    autolinkLibrariesWithApp()
+}
+
+android {
+     compileSdkVersion 34 
+    ndkVersion "27.1.12297006" // Định nghĩa NDK version nếu chưa có
+    buildToolsVersion "34.0.0" // Định nghĩa Build Tools version nếu chưa có
+    compileSdk rootProject.ext.compileSdkVersion
+    namespace 'com.khiemnt290412.Project_ImageCaption'
+    defaultConfig {
+        applicationId 'com.khiemnt290412.Project_ImageCaption'
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0.0"
+        minSdkVersion 24
+        targetSdkVersion 34
+    }
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            signingConfig signingConfigs.debug
+            shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            crunchPngs (findProperty('android.enablePngCrunchInReleaseBuilds')?.toBoolean() ?: true)
+        }
+    }
+    packagingOptions {
+        pickFirst '**/libc++_shared.so'
+        exclude '**/META-INF/AL2.0'
+        exclude '**/META-INF/LGPL2.1'
+        
+    }
+}
+
+dependencies {
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'  // Đảm bảo đã thêm thư viện ConstraintLayout
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'  // Nếu cần RecyclerView
+    
+    implementation("com.facebook.react:react-android")
+    implementation("com.facebook.fresco:fresco:2.6.0")
+    implementation("com.facebook.fresco:animated-gif:2.6.0")
+     implementation "org.tensorflow:tensorflow-lite:2.11.0"  // TensorFlow Lite core library
+    implementation "org.tensorflow:tensorflow-lite-support:2.11.0" // TensorFlow Lite Support library
+    implementation "org.tensorflow:tensorflow-lite-task-vision:2.11.0"  // TensorFlow Lite vision task library (nếu sử dụng cho nhận diện ảnh)
+    implementation "org.tensorflow:tensorflow-lite-gpu:2.11.0"  // TensorFlow Lite GPU delegate library (nếu sử dụng GPU)
+}
+
+    def hermesEnabled = project.hasProperty("expo.jsEngine") ? project.getProperty("expo.jsEngine") == "hermes" : false
+    if (hermesEnabled.toBoolean()) {
+        implementation("com.facebook.react:hermes-android:0.12.2")
+    }
+

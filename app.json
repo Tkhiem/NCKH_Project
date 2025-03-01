@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ProjectNCKH",
-    "slug": "ProjectNCKH",
+    "name": "Project_ImageCaption",
+    "slug": "Project_ImageCaption",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -15,7 +15,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.khiemnt290412.Project_ImageCaption"
     },
     "web": {
       "bundler": "metro",
@@ -24,6 +29,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-dev-client",
       [
         "expo-splash-screen",
         {
@@ -38,11 +44,20 @@
         {
           "recordAudioAndroid": true
         }
-      ]
+      ],
+      "expo-asset"
     ],
-    
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "b6d8fbe5-d3e1-4ca2-93da-b9a0cd38e81d"
+      }
+    },
+    "owner": "khiemnt290412"
   }
 }
